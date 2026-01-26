@@ -8,24 +8,39 @@ public class FlyingSpike : MonoBehaviour
     public Transform toPoint;
     public float speed = 1;
     public Vector3 originalPosition;
+    bool isActivated = false;
     void Start()
     {
         originalPosition = spike.transform.position;
     }
-    
+
+    private void Update()
+    {
+        if (isActivated)
+        {
+            ActivateTrap();
+        }
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            StartCoroutine(ActivateTrap());
+           isActivated = true;
         }
+        else
+        {
+            isActivated = false;
+        }
+
+        
     }
 
-    IEnumerator ActivateTrap()
+    public void ActivateTrap()
     {
-        spike.transform.position = Vector3.MoveTowards(transform.position, toPoint.position, speed * Time.deltaTime);
-        yield return new WaitForSeconds(2);
-        spike.transform.position = originalPosition;
+        spike.transform.position =
+            Vector3.MoveTowards(spike.transform.position, toPoint.position, speed * Time.deltaTime);
+        
     }
 }
