@@ -53,9 +53,9 @@ namespace Player
                 GameManager.Instance.Win();
             }
 
-            if (other.gameObject.CompareTag("Trap"))
+            if (other.gameObject.CompareTag("Trap")) // Al tocar una trampa reinicia el nivel 
             {
-                
+                GameManager.Instance.Die();
             }
         }
     }
