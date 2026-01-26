@@ -8,6 +8,7 @@ namespace Player
         [Header("Variables")] 
         [SerializeField] internal float speed = 3;
         [SerializeField] internal float rotSpeed = 3;
+        [SerializeField] internal Camera playerCamera;
         public bool isPlaying;
         
         private CharacterController controller;
@@ -28,7 +29,21 @@ namespace Player
             transform.Rotate(Vector3.up * xInput * rotSpeed * Time.deltaTime);
 
             controller.Move(move);
-            
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+
+
+                if (Physics.Raycast(ray, out RaycastHit hit))
+                {
+                    if (hit.collider.CompareTag("Button"))
+                    {
+                        hit.collider.GetComponentInParent<Door>().Activate();
+                    }
+                }
+            }
+
         }
 
         private void OnTriggerEnter(Collider other) // Al tocar el trofeo ganas!
@@ -36,6 +51,11 @@ namespace Player
             if (other.gameObject.CompareTag("Win"))
             {
                 GameManager.Instance.Win();
+            }
+
+            if (other.gameObject.CompareTag("Trap"))
+            {
+                
             }
         }
     }
