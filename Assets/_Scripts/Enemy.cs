@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,7 +9,8 @@ public class Enemy : MonoBehaviour
 
     private NavMeshAgent agent;
     private int currentPatrolPosition = 0;
-    
+    private bool waiting;
+    [SerializeField] private float waitTimeAtPoint = 1f;
     private enum State
     {
         Idle,
@@ -65,11 +67,24 @@ public class Enemy : MonoBehaviour
 
     void PatrolBehaviour()
     {
-        throw new NotImplementedException();
+        if (waiting || patrolPoints == null || patrolPoints.childCount == 0)
+            return;
+        
+        if (!agent.pathPending && agent.remainingDistance < 0.5f)
+            StartCoroutine(WaitAndGoNextPatrol());
+    }
+    IEnumerator WaitAndGoNextPatrol()
+    {
+        waiting = true;
+        agent.isStopped = true;
+        yield return new WaitForSeconds(waitTimeAtPoint);
+        waiting = false;
+        GoToNextPatrolPoint();
     }
 
     void GoToNextPatrolPoint()
     {
+        agent.isStopped = false;
         agent.SetDestination(patrolPoints.GetChild(currentPatrolPosition).position);
         currentPatrolPosition = (currentPatrolPosition + 1) % patrolPoints.childCount; // recorrer en bucle
     }
