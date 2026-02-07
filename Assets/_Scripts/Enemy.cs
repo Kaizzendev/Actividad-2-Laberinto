@@ -12,16 +12,19 @@ public class Enemy : MonoBehaviour
     private bool waiting;
     [SerializeField] private float waitTimeAtPoint = 1f;
     [SerializeField] float detectionRange = 5f;
-    [SerializeField] float loseRange = 8f;
-
+    
+    [Header("Contact Damage")]
+    [SerializeField] int contactDamage = 10;
+    [SerializeField] float damageCooldown = 1f;
+    float lastDamageTime = 0;
+    
     private Transform player;
+    
     private enum State
     {
         Idle,
         Patrol,
-        Chase,
-        Attack,
-        Dead
+        Chase
     }
     
     private State currentState = State.Idle;
@@ -63,6 +66,24 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.CompareTag("Player")) return;
+        
+        if (Time.time < lastDamageTime + damageCooldown)
+            return;
+        
+        Debug.Log("Ataco jugador");
+        //TODO: Sistema de vida
+        /**
+        PlayerHealth health = other.GetComponent<PlayerHealth>();
+        if (health == null) return;
+
+        health.TakeDamage(contactDamage);
+        lastDamageTime = Time.time;
+        */
+    }
+
     private void ChangeState(State newState)
     {
         if (newState == currentState) return;
@@ -93,9 +114,6 @@ public class Enemy : MonoBehaviour
                     ChangeState(State.Patrol);
                 }
                 break;
-            
-            case State.Attack:
-                break;
         }
     }
 
@@ -115,7 +133,7 @@ public class Enemy : MonoBehaviour
                     if (hit.collider == c)
                     {
                         player = hit.transform;
-                        Debug.Log(hit.collider.name);
+                        Debug.Log("Jugador encontrado!");
                     }
                 }
             }
@@ -135,6 +153,7 @@ public class Enemy : MonoBehaviour
         if (!agent.pathPending && agent.remainingDistance < 0.5f)
             StartCoroutine(WaitAndGoNextPatrol());
     }
+    
     IEnumerator WaitAndGoNextPatrol()
     {
         waiting = true;
