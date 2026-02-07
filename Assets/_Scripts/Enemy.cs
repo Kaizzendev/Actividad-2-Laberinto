@@ -11,6 +11,9 @@ public class Enemy : MonoBehaviour
     private int currentPatrolPosition = 0;
     private bool waiting;
     [SerializeField] private float waitTimeAtPoint = 1f;
+    [SerializeField] float detectionRange = 5f;
+    [SerializeField] float loseRange = 8f;
+
     private Transform player;
     private enum State
     {
@@ -43,40 +46,64 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        CheckPlayer();
+        UpdateState();
+        UpdateBehaviour();
+    }
+
+    private void UpdateBehaviour()
+    {
+        switch (currentState)
+        {
+            case State.Patrol:
+                PatrolBehaviour();
+                break;
+            case State.Chase:
+                ChaseBehaviour();
+                break;
+        }
+    }
+
+    private void ChangeState(State newState)
+    {
+        if (newState == currentState) return;
+        currentState = newState;
+        Debug.Log(currentState);
+    }
+
+    private void UpdateState()
+    {
+
+        if (currentState == State.Patrol || currentState == State.Chase)
+            CheckPlayer();
+
         switch (currentState)
         {
             case State.Idle:
                 break;
             case State.Patrol:
-                  PatrolBehaviour();
-                  if (player != null)
-                  {
-                      currentState = State.Chase;
-                  }
-                break;
-            case State.Chase:
-                ChaseBehaviour();
-                if (Vector3.Distance(player.position, transform.position) > 10f)
+                if (player != null)
                 {
-                    currentState = State.Patrol;
+                    ChangeState(State.Chase);
                 }
-                // else if (Vector3.Distance(player.position, transform.position) < 10f)
-                // {
-                //     currentState = State.Attack;
-                // }
                 break;
+            
+            case State.Chase:
+                if (player == null)
+                {
+                    ChangeState(State.Patrol);
+                }
+                break;
+            
             case State.Attack:
                 break;
         }
-        Debug.Log(currentState);
     }
-    
+
 
     private void CheckPlayer()
     {
-        
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 5f, LayerMask.GetMask("Player"));
+        player = null;
+        Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRange, LayerMask.GetMask("Player"));
 
         foreach (Collider c in colliders)
         {
