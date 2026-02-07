@@ -8080,7 +8080,7 @@ GameObject:
   - component: {fileID: 1050299292}
   - component: {fileID: 1050299291}
   - component: {fileID: 1050299296}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}

@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     private int currentPatrolPosition = 0;
     private bool waiting;
     [SerializeField] private float waitTimeAtPoint = 1f;
+    private Transform player;
     private enum State
     {
         Idle,
@@ -42,27 +43,61 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        CheckPlayer();
         switch (currentState)
         {
             case State.Idle:
                 break;
             case State.Patrol:
                   PatrolBehaviour();
-                //CONDICION DE VER JUGADOR
+                  if (player != null)
+                  {
+                      currentState = State.Chase;
+                  }
                 break;
             case State.Chase:
                 ChaseBehaviour();
-                //CONDICION DE ATACAR
-                //CONDICION DE PATRULLAR
+                if (Vector3.Distance(player.position, transform.position) > 10f)
+                {
+                    currentState = State.Patrol;
+                }
+                // else if (Vector3.Distance(player.position, transform.position) < 10f)
+                // {
+                //     currentState = State.Attack;
+                // }
                 break;
             case State.Attack:
                 break;
+        }
+        Debug.Log(currentState);
+    }
+    
+
+    private void CheckPlayer()
+    {
+        
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 5f, LayerMask.GetMask("Player"));
+
+        foreach (Collider c in colliders)
+        {
+            if (c.CompareTag("Player"))
+            {
+                Vector3 direction = c.transform.position - transform.position;
+                if(Physics.Raycast(transform.position, direction, out RaycastHit hit))
+                {
+                    if (hit.collider == c)
+                    {
+                        player = hit.transform;
+                        Debug.Log(hit.collider.name);
+                    }
+                }
+            }
         }
     }
 
     private void ChaseBehaviour()
     {
-        throw new NotImplementedException();
+        agent.SetDestination(player.position);
     }
 
     void PatrolBehaviour()
