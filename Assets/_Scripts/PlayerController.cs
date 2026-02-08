@@ -53,7 +53,7 @@ namespace Player
             Vector3 localMove = new Vector3(0, 0, yInput);
             Vector3 move = transform.TransformDirection(localMove) * speed * Time.deltaTime;
 
-            float movimiento = yInput*100f;
+            float movimiento = Mathf.Abs(yInput*100f);
             
             animator.SetFloat("movimiento",movimiento);
 
