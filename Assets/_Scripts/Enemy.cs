@@ -56,8 +56,7 @@ public class Enemy : MonoBehaviour
         {
             if (player_controller.enemigo_muerto)
             {
-                Destroy(this.gameObject);
-                Destroy(this);
+                Destroy(gameObject);
                 Debug.Log("enemigo muerto");
                 player_controller.enemigo_muerto = false;
             }

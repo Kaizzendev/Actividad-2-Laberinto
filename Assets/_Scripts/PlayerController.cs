@@ -39,7 +39,6 @@ namespace Player
 
         void Update()
         {
-            animator.SetBool("enemigo_a_tiro", enemigo_a_tiro);
             if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
 
             if (isPlaying == false) return; // Esta linea no deja mover al jugador hasta darle al play
@@ -79,20 +78,27 @@ namespace Player
                 }
             }
 
-
             if (Input.GetKeyDown(KeyCode.Space))
             {
-
-                if (enemigo_a_tiro)
-                {
-                    animator.SetBool("enemigo_a_tiro", enemigo_a_tiro);
-                    enemigo_a_tiro = false;
-                    enemigo_muerto = true;
-                }
-                puntos += 25f;
-                if (puntos > 100f) puntos = 100f;
+                HitEnemy();
             }
+        }
+        
+        private void HitEnemy()
+        {
+            animator.SetTrigger("enemigo_a_tiro");
+            Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
 
+
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                if (hit.collider.CompareTag("Enemy"))
+                {
+                    puntos += 25f;  // cuando abre una puerta gana 25 puntos
+                    if (puntos > 100f) puntos = 100f;
+                    Destroy(hit.collider.gameObject);
+                }
+            }
         }
 
         public void actualiza_vida_puntos()

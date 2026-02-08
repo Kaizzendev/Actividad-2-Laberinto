@@ -7,6 +7,7 @@ TagManager:
   - Win
   - Trap
   - Button
+  - Enemy
   layers:
   - Default
   - TransparentFX
