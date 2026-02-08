@@ -29,7 +29,7 @@ namespace Player
             animator = GetComponent<Animator>();
             animator.enabled = true; 
             vida = 100f;
-            puntos = 0f;a
+            puntos = 0f;
             enemigo_a_tiro = false;
             enemigo_muerto = false;
         }
