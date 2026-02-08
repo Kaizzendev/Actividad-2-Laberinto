@@ -8,8 +8,11 @@ public class UIManager : MonoBehaviour
    [Header("Cameras")]
    [SerializeField] private Camera mainCamera;
    [SerializeField] private Camera cenitalCamera;
+
    
    public Button playButton;
+
+  
 
    public void Play()
    {
@@ -22,4 +25,6 @@ public class UIManager : MonoBehaviour
       mainCamera.gameObject.SetActive(!mainCamera.gameObject.activeSelf);
       cenitalCamera.gameObject.SetActive(!cenitalCamera.gameObject.activeSelf);
    }
+
+    
 }

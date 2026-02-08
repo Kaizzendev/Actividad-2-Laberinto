@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Player
 {
@@ -9,17 +10,38 @@ namespace Player
         [SerializeField] internal float speed = 3;
         [SerializeField] internal float rotSpeed = 3;
         [SerializeField] internal Camera playerCamera;
+
+
         public bool isPlaying;
-        
+        public float vida;
+        public float puntos;
+
+        public bool enemigo_a_tiro;
+        public bool enemigo_muerto;
+
+        private Animator animator;
+
         private CharacterController controller;
+
         private void Awake()
         {
-          controller = GetComponent<CharacterController>();
+            controller = GetComponent<CharacterController>();
+            animator = GetComponent<Animator>();
+            animator.enabled = true; 
+            vida = 100f;
+            puntos = 0f;
+            enemigo_a_tiro = false;
+            enemigo_muerto = false;
         }
 
         void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
+
             if (isPlaying == false) return; // Esta linea no deja mover al jugador hasta darle al play
+
+            actualiza_vida_puntos();
+
             float yInput = Input.GetAxis("Vertical");
             float xInput = Input.GetAxis("Horizontal");
 
@@ -40,22 +62,55 @@ namespace Player
                     if (hit.collider.CompareTag("Button"))
                     {
                         hit.collider.GetComponentInParent<Door>().Activate();
+                        puntos += 25f;  // cuando abre una puerta gana 25 puntos
                     }
                 }
             }
 
+            
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+
+                if (enemigo_a_tiro)
+                {
+                    enemigo_a_tiro = false;
+                    enemigo_muerto = true;
+                }
+                puntos += 25f;
+                if (puntos > 100f) puntos = 100f;
+            }
+
+        }
+
+        public void actualiza_vida_puntos()
+        {
+            GameManager.Instance.Vida_puntos(vida, puntos);
         }
 
         private void OnTriggerEnter(Collider other) // Al tocar el trofeo ganas!
-        {
+        { 
             if (other.gameObject.CompareTag("Win"))
             {
                 GameManager.Instance.Win();
             }
 
-            if (other.gameObject.CompareTag("Trap")) // Al tocar una trampa reinicia el nivel 
+            // si toca con una trampa pierde 25 de vida y 5 puntos, si la vida se queda a cero pero tiene
+            // mas de 20 puntos coge 20 puuntos y le suma otros 100 de vida
+
+            if (other.gameObject.CompareTag("Trap"))  
             {
-                GameManager.Instance.Die();
+                if (vida>=0f) vida -= 25f;
+                if (puntos >= 0f) puntos -= 5f;
+                    
+                if (vida <= 0f && puntos >= 20f)
+                {
+                    puntos -= 20f;
+                    vida = 100f;
+                }
+
+                if (puntos <= 0f) puntos = 0f;
+
+                if (vida <= 0f) GameManager.Instance.Die();
             }
         }
     }
