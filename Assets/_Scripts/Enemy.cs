@@ -9,32 +9,32 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Transform patrolPoints;
     private PlayerController player_controller;
 
-    
+
     private NavMeshAgent agent;
     private int currentPatrolPosition = 0;
     private bool waiting;
     [SerializeField] private float waitTimeAtPoint = 1f;
     [SerializeField] float detectionRange = 5f;
-    
+
     [Header("Contact Damage")]
     [SerializeField] int contactDamage = 10;
     [SerializeField] float damageCooldown = 1f;
     float lastDamageTime = 0;
-    
+
     private Transform player;
-    
+
     private enum State
     {
         Idle,
         Patrol,
         Chase
     }
-    
+
     private State currentState = State.Idle;
-    
+
     private void Awake()
     {
-        agent =  GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();
     }
 
     private void Start()
@@ -59,6 +59,7 @@ public class Enemy : MonoBehaviour
                 Destroy(this.gameObject);
                 Destroy(this);
                 Debug.Log("enemigo muerto");
+                player_controller.enemigo_muerto = false;
             }
         }
         UpdateState();
@@ -81,10 +82,10 @@ public class Enemy : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player")) return;
-        
+
         if (Time.time < lastDamageTime + damageCooldown)
             return;
-        
+
         Debug.Log("Ataco jugador");
 
         player_controller = other.gameObject.GetComponent<PlayerController>();
@@ -116,7 +117,7 @@ public class Enemy : MonoBehaviour
                     ChangeState(State.Chase);
                 }
                 break;
-            
+
             case State.Chase:
                 if (player == null)
                 {
@@ -137,7 +138,7 @@ public class Enemy : MonoBehaviour
             if (c.CompareTag("Player"))
             {
                 Vector3 direction = c.transform.position - transform.position;
-                if(Physics.Raycast(transform.position, direction, out RaycastHit hit))
+                if (Physics.Raycast(transform.position, direction, out RaycastHit hit))
                 {
                     if (hit.collider == c)
                     {
@@ -158,11 +159,11 @@ public class Enemy : MonoBehaviour
     {
         if (waiting || patrolPoints == null || patrolPoints.childCount == 0)
             return;
-        
+
         if (!agent.pathPending && agent.remainingDistance < 0.5f)
             StartCoroutine(WaitAndGoNextPatrol());
     }
-    
+
     IEnumerator WaitAndGoNextPatrol()
     {
         waiting = true;
