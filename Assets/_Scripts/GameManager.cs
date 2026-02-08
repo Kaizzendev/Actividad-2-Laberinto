@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
     }
-
+    
     public void Play()
     {
         player.isPlaying = true;
