@@ -1,73 +1,163 @@
+
 # 🧩 Actividad – Laberinto
+
+  
 
 ## 📌 Descripción general
 
+  
+
 Esta es la **actividad** para la asignatura **Motores de Videojuegos I**.
+
+  
 
 El proyecto consiste en **escapar de un laberinto** y **tocar un trofeo** para completar el nivel.
 
+  
+
 El jugador puede **cambiar de cámara** durante la partida.
 
+  
+
 ---
+
+## 🔄 Actualización – Tercera entrega
+
+
+Para la tercera entrega la hemos desarrollado conjuntamente Vidal y yo, cada uno se ha encargado de apartados diferentes en diferentes ramas para trabajar en conjunto, hemos decidido hacer todos los apartados. Vidal se encargo del sistema de salud, puntuación y las animaciones del personaje y yo me he encargado de la navegación con navmesh y la fsm del enemigo con enums.
+
+### Resumen 
+- IA de enemigo con navmesh
+- FSM enemigo (patrol y chase)
+- Player con animation controller 
+- Sistema de salud
+- Sistema de puntuación dinámico 
+
+---
+
+  
 
 ## 🔄 Actualización – Segunda entrega
 
+  
+
 Para la segunda entrega se han añadido nuevas mecánicas y trampas que enriquecen la jugabilidad:
+
+  
 
 ### 🚪 Puertas con código de color
 
+  
+
 * Las puertas se abren al **interactuar con la tecla `E`**.
+
 * Es necesario que el **raycast apunte al botón** correspondiente.
+
 * Al abrirse, se activa:
 
-  * Una **animación**
-  * Un **cambio de cámara**
+  
+
+* Una **animación**
+
+* Un **cambio de cámara**
+
+  
 
 ### ⚠️ Nuevas trampas
 
+  
+
 Se han añadido **tres tipos de trampas**:
 
-* **Trampa de bola** 🟠
-  Una bola que se mueve de un lado a otro por los pasillos.
+  
 
-* **Trampa de pinchos** 🔺
-  Pinchos que salen del suelo o de la pared.
+*  **Trampa de bola** 🟠
 
-* **Trampa de pinchos activable** 💥
-  Al pisar una losa, los pinchos salen disparados hacia el jugador.
+Una bola que se mueve de un lado a otro por los pasillos.
+
+  
+
+*  **Trampa de pinchos** 🔺
+
+Pinchos que salen del suelo o de la pared.
+
+  
+
+*  **Trampa de pinchos activable** 💥
+
+Al pisar una losa, los pinchos salen disparados hacia el jugador.
+
+  
 
 ---
+
+  
 
 ## 🎮 Estado del código
 
+  
+
 * Los **scripts funcionan correctamente**, pero se han diseñado de la forma **más simple posible**.
+
 * El **Game Manager**:
 
-  * Debería tener más seguridad para comportarse correctamente como **Singleton**.
-  * Sería recomendable implementar una **máquina de estados** para gestionar:
+  
 
-    * Jugando
-    * Pausado
-    * Victoria
+* Debería tener más seguridad para comportarse correctamente como **Singleton**.
+
+* Sería recomendable implementar una **máquina de estados** para gestionar:
+
+  
+
+* Jugando
+
+* Pausado
+
+* Victoria
+
+  
 
 ---
+
+  
 
 ## 🎥 Enlaces
 
+  
+
 ### 📹 Vídeos
 
-* **Vídeo explicativo (primera entrega):**
-  [https://1drv.ms/v/c/40d7f72d38f468c7/IQD0ACC-l9-xTIFoyb3_YRIEAbrC7BjK7AGLAQjjtkm1pvA?e=Km6Paw](https://1drv.ms/v/c/40d7f72d38f468c7/IQD0ACC-l9-xTIFoyb3_YRIEAbrC7BjK7AGLAQjjtkm1pvA?e=Km6Paw)
+* ** Vídeo explicativo (tercera entrega):**
+  
+[Laberinto3.mp4](https://1drv.ms/v/c/40d7f72d38f468c7/IQA3qDe3NLaRR4pwDXgQDXvhAf4E0WIA3B7Js3oc_sn-Qtg?e=6EKPGk)
 
-* **Vídeo segunda entrega:**
-  [https://1drv.ms/v/c/40d7f72d38f468c7/IQAD0pZzAWl3SYPySzcL3QRMAWV_GeMVoAYet-FE0_ZCS6k?e=PdPQcr](https://1drv.ms/v/c/40d7f72d38f468c7/IQAD0pZzAWl3SYPySzcL3QRMAWV_GeMVoAYet-FE0_ZCS6k?e=PdPQcr)
+*  **Vídeo explicativo (primera entrega):**
+
+[https://1drv.ms/v/c/40d7f72d38f468c7/IQD0ACC-l9-xTIFoyb3_YRIEAbrC7BjK7AGLAQjjtkm1pvA?e=Km6Paw](https://1drv.ms/v/c/40d7f72d38f468c7/IQD0ACC-l9-xTIFoyb3_YRIEAbrC7BjK7AGLAQjjtkm1pvA?e=Km6Paw)
+
+  
+
+*  **Vídeo segunda entrega:**
+
+[https://1drv.ms/v/c/40d7f72d38f468c7/IQAD0pZzAWl3SYPySzcL3QRMAWV_GeMVoAYet-FE0_ZCS6k?e=PdPQcr](https://1drv.ms/v/c/40d7f72d38f468c7/IQAD0pZzAWl3SYPySzcL3QRMAWV_GeMVoAYet-FE0_ZCS6k?e=PdPQcr)
+
+  
 
 ### 🌐 Itch.io
 
-* [https://kaizzendev.itch.io/laberinto-actividad-2](https://kaizzendev.itch.io/laberinto-actividad-2)
+  
+
+* [https://kaizzendev.itch.io/laberinto-actividad-grupal](https://kaizzendev.itch.io/laberinto-actividad-grupal)
+
+  
 
 ---
 
+  
+
 ## 🛠️ Autor
 
+  
+
 **KaizzenDev**
+**Vidal**

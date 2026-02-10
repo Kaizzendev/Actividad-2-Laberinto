@@ -12,7 +12,7 @@ public class Ball : MonoBehaviour
     {
         objective = pointA.position;
     }
-
+    
     void Update()
     {
         transform.position = Vector3.MoveTowards(transform.position, objective, speed * Time.deltaTime);
