@@ -91,6 +91,10 @@ public class Enemy : MonoBehaviour
 
         player_controller.vida -= 25f;
         player_controller.enemigo_a_tiro = true;
+        if (player_controller.vida <= 0)
+        {
+            GameManager.Instance.Die();
+        }
     }
 
     private void ChangeState(State newState)
